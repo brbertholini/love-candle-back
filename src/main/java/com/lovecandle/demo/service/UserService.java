@@ -26,7 +26,7 @@ public class UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
-
+    
     public String deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
@@ -34,5 +34,17 @@ public class UserService {
             return null;
         }
         return null;
+    }
+
+    public User updateUser(Long id, User obj) {
+        User entity = userRepository.getReferenceById(id);
+        updateData(entity, obj);
+        return userRepository.save(entity);
+    }
+
+    public void updateData(User entity, User obj) {
+        entity.setName(obj.getName());
+        entity.setEmail(obj.getEmail());
+        entity.setPhone(obj.getPhone());
     }
 }

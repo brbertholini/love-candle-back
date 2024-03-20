@@ -7,7 +7,9 @@ import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +33,21 @@ public class UserController {
     }
 
     @PostMapping
-    public User saveUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<User> saveUser(@RequestBody User obj) {
+        obj = userService.saveUser(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).body(obj);
     }
 
     @DeleteMapping(value = "/{id}")
-    public User deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return null;
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<User> userUpdate(@PathVariable Long id, @RequestBody User obj) {
+        obj = userService.updateUser(id, obj);
+        return ResponseEntity.ok().body(obj);
     }
 }
