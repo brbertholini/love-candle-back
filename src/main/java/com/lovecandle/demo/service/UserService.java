@@ -18,8 +18,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+        Optional<User> obj = userRepository.findById(id);
+        return obj.orElse(null);
     }
 
     public User saveUser(User user) {

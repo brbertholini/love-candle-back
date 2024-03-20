@@ -3,7 +3,9 @@ package com.lovecandle.demo.controller;
 import com.lovecandle.demo.entitiy.User;
 import com.lovecandle.demo.service.UserService;
 import org.apache.coyote.Request;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,15 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> list = userService.getAllUsers();
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User obj = userService.getUserById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
