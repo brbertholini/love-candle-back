@@ -30,5 +30,17 @@ public class ProductService {
         return productRepository.save(obj);
     }
 
+    public Product updateProduct(Long id, Product obj) {
+        Product entity = productRepository.getReferenceById(id);
+        updateData(entity, obj);
+        return productRepository.save(entity);
+    }
 
+    public void updateData(Product entity, Product obj) {
+        entity.setTitle(obj.getTitle());
+        entity.setDescription(obj.getDescription());
+        entity.setCategory(obj.getCategory());
+        entity.setPrice(obj.getPrice());
+        entity.setImgUrl(obj.getImgUrl());
+    }
 }
