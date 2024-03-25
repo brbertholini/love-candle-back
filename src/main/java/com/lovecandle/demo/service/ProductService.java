@@ -30,6 +30,15 @@ public class ProductService {
         return productRepository.save(obj);
     }
 
+    public void deleteProduct(Long id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            // fazer exception
+            return;
+        }
+    }
+
     public Product updateProduct(Long id, Product obj) {
         Product entity = productRepository.getReferenceById(id);
         updateData(entity, obj);
