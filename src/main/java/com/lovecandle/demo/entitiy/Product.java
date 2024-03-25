@@ -2,6 +2,7 @@ package com.lovecandle.demo.entitiy;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Data
@@ -20,6 +21,7 @@ public class Product {
 
     private Double price;
 
+    @Nullable
     private String imgUrl;
 
     public Product() {
@@ -32,5 +34,9 @@ public class Product {
         this.category = category;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
