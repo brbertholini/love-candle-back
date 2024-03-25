@@ -20,6 +20,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         Optional<User> obj = userRepository.findById(id);
+        // fazer exception
         return obj.orElse(null);
     }
 
