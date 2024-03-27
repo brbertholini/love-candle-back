@@ -24,7 +24,7 @@ public class User {
         this.email = userDTO.getEmail();
         this.phone = userDTO.getPhone();
         this.password = userDTO.getPassword();
-
+    }
     public User() {
     }
 
