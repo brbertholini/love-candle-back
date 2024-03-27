@@ -20,13 +20,14 @@ public class UserService {
 
     public User getUserById(Long id) {
         Optional<User> obj = userRepository.findById(id);
+        // fazer exception
         return obj.orElse(null);
     }
 
     public User saveUser(User user) {
         return userRepository.save(user);
     }
-    
+
     public String deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
