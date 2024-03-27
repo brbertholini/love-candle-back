@@ -24,5 +24,16 @@ public class User {
         this.email = userDTO.getEmail();
         this.phone = userDTO.getPhone();
         this.password = userDTO.getPassword();
+
+    public User() {
     }
+
+    public User(Long id, String name, String email, String phone, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
 }

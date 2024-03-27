@@ -19,6 +19,7 @@ public class UserService {
         return userRepository.findAll().stream().map(UserDTO::new).toList();
     }
 
+
     public Optional<UserDTO> getUserById(Long id) {
         return userRepository.findById(id).map(UserDTO::new);
     }
@@ -31,6 +32,7 @@ public class UserService {
         Optional<UserDTO> userDTO = this.getUserById(id);
         userRepository.deleteById(id);
         return userDTO;
+
     }
 
     public UserDTO updateUser(Long id, UserDTO obj) {
