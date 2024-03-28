@@ -1,5 +1,6 @@
 package com.lovecandle.demo.entitiy;
 
+import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,13 @@ public class User {
     private String phone;
     private String password;
 
+    public User(UserDTO userDTO) {
+        this.id = userDTO.getId();
+        this.name = userDTO.getName();
+        this.email = userDTO.getEmail();
+        this.phone = userDTO.getPhone();
+        this.password = userDTO.getPassword();
+    }
     public User() {
     }
 
@@ -28,31 +36,4 @@ public class User {
         this.password = password;
     }
 
-    public Long getId(){
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

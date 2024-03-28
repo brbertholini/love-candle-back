@@ -1,11 +1,14 @@
 package com.lovecandle.demo.controller;
 
 import com.lovecandle.demo.entitiy.User;
+import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import com.lovecandle.demo.service.UserService;
 import org.apache.coyote.*;
 import org.apache.coyote.Request;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,19 +25,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> list = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> list = userService.getAllUsers();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User obj = userService.getUserById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<UserDTO> userDTO = userService.getUserById(id);
+
+        if(userDTO.isPresent()) {
+            return ResponseEntity.ok().body(userDTO.get());
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @PostMapping
-    public ResponseEntity<User> saveUser(@RequestBody User obj) {
+    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO obj) {
         obj = userService.saveUser(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
@@ -42,12 +50,17 @@ public class UserController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        Optional<UserDTO> userDTO = userService.deleteUser(id);
+        if(userDTO.isPresent()) {
+            return ResponseEntity.noContent().build();
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> userUpdate(@PathVariable Long id, @RequestBody User obj) {
+    public ResponseEntity<UserDTO> userUpdate(@PathVariable Long id, @RequestBody UserDTO obj) {
         obj = userService.updateUser(id, obj);
         return ResponseEntity.ok().body(obj);
     }
