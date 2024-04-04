@@ -40,8 +40,11 @@ public class ProductService {
 
     public void updateData(Product entity, Product obj) {
         entity.setTitle(obj.getTitle());
-        entity.setDescription(obj.getDescription());
         entity.setCategory(obj.getCategory());
+        entity.setFragrance(obj.getFragrance());
+        entity.setAmount(obj.getAmount());
+        entity.setWeight(obj.getWeight());
+        entity.setDescription(obj.getDescription());
         entity.setPrice(obj.getPrice());
         entity.setImgUrl(obj.getImgUrl());
     }
