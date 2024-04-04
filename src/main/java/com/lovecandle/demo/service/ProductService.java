@@ -1,12 +1,12 @@
 package com.lovecandle.demo.service;
 
 import com.lovecandle.demo.entitiy.Product;
+import com.lovecandle.demo.entitiy.User;
+import com.lovecandle.demo.entitiy.dtos.ProductDTO;
+import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import com.lovecandle.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,33 +16,26 @@ public class ProductService {
     @Autowired
     public ProductRepository productRepository;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() { return productRepository.findAll().stream().map(ProductDTO::new).toList(); }
+
+    public Optional<ProductDTO> getProductById(Long id) { return productRepository.findById(id).map(ProductDTO::new);
     }
 
-    public Product getProductById(Long id) {
-        Optional<Product> obj = productRepository.findById(id);
-        // fazer exception
-        return obj.orElse(null);
+    public ProductDTO saveProduct(ProductDTO productDTO) {
+        return new ProductDTO(productRepository.save(new Product(productDTO)));
     }
 
-    public Product saveProduct(Product obj) {
-        return productRepository.save(obj);
+    public Optional<ProductDTO> deleteProduct(Long id) {
+        Optional<ProductDTO> productDTO = this.getProductById(id);
+        productRepository.deleteById(id);
+        return productDTO;
+
     }
 
-    public void deleteProduct(Long id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-        } else {
-            // fazer exception
-            return;
-        }
-    }
-
-    public Product updateProduct(Long id, Product obj) {
+    public ProductDTO updateProduct(Long id, ProductDTO obj) {
         Product entity = productRepository.getReferenceById(id);
-        updateData(entity, obj);
-        return productRepository.save(entity);
+        updateData(entity, new Product(obj));
+        return new ProductDTO(productRepository.save(entity));
     }
 
     public void updateData(Product entity, Product obj) {

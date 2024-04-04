@@ -1,6 +1,5 @@
 package com.lovecandle.demo.controller;
 
-import com.lovecandle.demo.entitiy.User;
 import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import com.lovecandle.demo.service.UserService;
 import org.apache.coyote.*;
@@ -34,9 +33,9 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<UserDTO> userDTO = userService.getUserById(id);
 
-        if(userDTO.isPresent()) {
+        if (userDTO.isPresent()) {
             return ResponseEntity.ok().body(userDTO.get());
-        } else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
@@ -48,20 +47,17 @@ public class UserController {
         return ResponseEntity.created(uri).body(obj);
     }
 
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         Optional<UserDTO> userDTO = userService.deleteUser(id);
-        if(userDTO.isPresent()) {
+        if (userDTO.isPresent()) {
             return ResponseEntity.noContent().build();
-        } else{
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
     }
-
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> userUpdate(@PathVariable Long id, @RequestBody UserDTO obj) {
-        obj = userService.updateUser(id, obj);
-        return ResponseEntity.ok().body(obj);
-    }
 }
+
+
