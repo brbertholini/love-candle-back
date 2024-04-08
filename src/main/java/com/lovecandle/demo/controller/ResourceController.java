@@ -1,7 +1,7 @@
 package com.lovecandle.demo.controller;
 
-import com.lovecandle.demo.entitiy.dtos.ProductDTO;
-import com.lovecandle.demo.service.ProductService;
+import com.lovecandle.demo.entitiy.dtos.ResourceDTO;
+import com.lovecandle.demo.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,47 +14,47 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping(value = "/products")
-public class ProductController {
+@RequestMapping(value = "/resources")
+public class ResourceController {
 
     @Autowired
-    private ProductService productService;
+    private ResourceService resourceService;
 
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<ProductDTO> list = productService.getAllProducts();
+    public ResponseEntity<List<ResourceDTO>> getAllResources() {
+        List<ResourceDTO> list = resourceService.getAllResources();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        Optional<ProductDTO> productDTO = productService.getProductById(id);
+    public ResponseEntity<ResourceDTO> getResourceById(@PathVariable Long id) {
+        Optional<ResourceDTO> resourceDTO = resourceService.getResourceById(id);
 
-        if (productDTO.isPresent()) {
-            return ResponseEntity.ok().body(productDTO.get());
+        if (resourceDTO.isPresent()) {
+            return ResponseEntity.ok().body(resourceDTO.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO obj) {
-        obj = productService.saveProduct(obj);
+    public ResponseEntity<ResourceDTO> saveResource(@RequestBody ResourceDTO obj) {
+        obj = resourceService.saveResource(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO obj) {
-        obj = productService.updateProduct(id, obj);
+    public ResponseEntity<ResourceDTO> updateResource(@PathVariable Long id, @RequestBody ResourceDTO obj) {
+        obj = resourceService.updateResource(id, obj);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        Optional<ProductDTO> productDTO = productService.deleteProduct(id);
-        if (productDTO.isPresent()) {
+    public ResponseEntity<Void> deleteResource(@PathVariable Long id) {
+        Optional<ResourceDTO> resourceDTO = resourceService.deleteResource(id);
+        if (resourceDTO.isPresent()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
