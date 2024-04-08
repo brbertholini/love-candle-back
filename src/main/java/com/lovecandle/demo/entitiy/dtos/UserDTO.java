@@ -4,8 +4,6 @@ import com.lovecandle.demo.entitiy.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
 @Getter
 @NoArgsConstructor
 public class UserDTO {

@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import java.util.Optional;
-
 @Getter
 @NoArgsConstructor
 public class ProductDTO {

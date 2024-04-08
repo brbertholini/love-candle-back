@@ -1,7 +1,6 @@
 package com.lovecandle.demo.controller;
 
 import com.lovecandle.demo.entitiy.dtos.ProductDTO;
-import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import com.lovecandle.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -20,7 +20,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @CrossOrigin(origins = "http://localhost:5173")
+
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<ProductDTO> list = productService.getAllProducts();
