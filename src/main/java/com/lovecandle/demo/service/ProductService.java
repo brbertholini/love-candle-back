@@ -1,9 +1,7 @@
 package com.lovecandle.demo.service;
 
 import com.lovecandle.demo.entitiy.Product;
-import com.lovecandle.demo.entitiy.User;
 import com.lovecandle.demo.entitiy.dtos.ProductDTO;
-import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import com.lovecandle.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
