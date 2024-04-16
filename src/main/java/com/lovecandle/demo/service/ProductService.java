@@ -1,18 +1,26 @@
 package com.lovecandle.demo.service;
 
 import com.lovecandle.demo.entitiy.Product;
+import com.lovecandle.demo.entitiy.Resource;
 import com.lovecandle.demo.entitiy.dtos.ProductDTO;
+import com.lovecandle.demo.entitiy.dtos.ResourceDTO;
 import com.lovecandle.demo.repository.ProductRepository;
+import com.lovecandle.demo.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
     @Autowired
     public ProductRepository productRepository;
+
+    @Autowired
+    public ResourceRepository resourceRepository;
 
     public List<ProductDTO> getAllProducts() { return productRepository.findAll().stream().map(ProductDTO::new).toList(); }
 
@@ -20,7 +28,30 @@ public class ProductService {
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
-        return new ProductDTO(productRepository.save(new Product(productDTO)));
+        Product product = new Product(productDTO);
+
+        // loop pelos recursos do DTO
+        List<Resource> updatedResources = new ArrayList<>();
+
+        for (ResourceDTO resourceDTO : productDTO.getResources()) {
+            // verifica se o ID do recurso existe
+            if (resourceDTO.getId() != null) {
+                // busca o recurso no banco
+                Optional<Resource> optionalResource = resourceRepository.findById(resourceDTO.getId());
+                if (optionalResource.isPresent()) {
+                    // se o recurso existir, associa ao produto
+                    Resource resource = optionalResource.get();
+                    resource.setProduct(product);
+                    updatedResources.add(resource);
+                }
+            }
+        }
+        // define a lista de recursos atualizada
+        product.setResources(updatedResources);
+
+        product = productRepository.save(product);
+
+        return new ProductDTO(product);
     }
 
     public Optional<ProductDTO> deleteProduct(Long id) {

@@ -1,10 +1,12 @@
 package com.lovecandle.demo.entitiy;
 
 import com.lovecandle.demo.entitiy.dtos.ProductDTO;
-import com.lovecandle.demo.entitiy.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.lang.Nullable;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -23,6 +25,8 @@ public class Product {
     private Double price;
     @Nullable
     private String imgUrl;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Resource> resources;
 
     public Product(ProductDTO productDTO) {
         this.id = productDTO.getId();
@@ -34,6 +38,7 @@ public class Product {
         this.description = productDTO.getDescription();
         this.price = productDTO.getPrice();
         this.imgUrl = productDTO.getImgUrl();
+        this.resources = productDTO.getResources().stream().map(Resource::new).collect(Collectors.toList());
     }
 
     public Product() {

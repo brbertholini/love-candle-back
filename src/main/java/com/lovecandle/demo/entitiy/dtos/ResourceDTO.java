@@ -1,6 +1,9 @@
 package com.lovecandle.demo.entitiy.dtos;
 
+import com.lovecandle.demo.entitiy.Product;
 import com.lovecandle.demo.entitiy.Resource;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +18,7 @@ public class ResourceDTO {
     private int amount;
     private Double price;
     private int quantityInStock;
+    private ProductDTO productDTO;
 
     public ResourceDTO(Resource resource) {
         this.id = resource.getId();
