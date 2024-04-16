@@ -1,5 +1,6 @@
 package com.lovecandle.demo.entitiy;
 
+import com.lovecandle.demo.entitiy.dtos.ProductDTO;
 import com.lovecandle.demo.entitiy.dtos.ResourceDTO;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,6 +19,9 @@ public class Resource {
     private Double price;
     private int amount;
     private int quantityInStock;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public Resource(ResourceDTO resourceDTO) {
         this.id = resourceDTO.getId();
@@ -29,9 +33,9 @@ public class Resource {
         this.quantityInStock = resourceDTO.getQuantityInStock();
     }
 
+    @Deprecated
     public Resource() {
     }
-
 
     public Resource(Long id, String title, String category, String fragrance, int amount, Double price, int quantityInStock) {
         this.id = id;

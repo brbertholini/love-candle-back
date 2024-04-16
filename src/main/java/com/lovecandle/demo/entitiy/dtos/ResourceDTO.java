@@ -1,6 +1,9 @@
 package com.lovecandle.demo.entitiy.dtos;
 
+import com.lovecandle.demo.entitiy.Product;
 import com.lovecandle.demo.entitiy.Resource;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
