@@ -18,7 +18,6 @@ public class ResourceDTO {
     private int amount;
     private Double price;
     private int quantityInStock;
-    private ProductDTO productDTO;
 
     public ResourceDTO(Resource resource) {
         this.id = resource.getId();

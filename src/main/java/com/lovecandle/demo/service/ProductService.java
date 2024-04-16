@@ -30,24 +30,25 @@ public class ProductService {
     public ProductDTO saveProduct(ProductDTO productDTO) {
         Product product = new Product(productDTO);
 
-        // loop pelos recursos do DTO
-        List<Resource> updatedResources = new ArrayList<>();
+        // lista para armazenar os recursos associados
+        List<Resource> associatedResources = new ArrayList<>();
 
+        // loop pelos recursos do DTO
         for (ResourceDTO resourceDTO : productDTO.getResources()) {
             // verifica se o ID do recurso existe
             if (resourceDTO.getId() != null) {
                 // busca o recurso no banco
                 Optional<Resource> optionalResource = resourceRepository.findById(resourceDTO.getId());
-                if (optionalResource.isPresent()) {
-                    // se o recurso existir, associa ao produto
-                    Resource resource = optionalResource.get();
-                    resource.setProduct(product);
-                    updatedResources.add(resource);
-                }
+                optionalResource.ifPresent(associatedResources::add); // adiciona o recurso encontrado à lista
+            } else {
+                // caso o ID do recurso não exista
+                Resource newResource = new Resource(resourceDTO);
+                newResource.setProduct(product); // define o produto para o novo recurso
+                associatedResources.add(newResource); // adiciona o novo recurso à lista
             }
         }
         // define a lista de recursos atualizada
-        product.setResources(updatedResources);
+        product.setResources(associatedResources);
 
         product = productRepository.save(product);
 
