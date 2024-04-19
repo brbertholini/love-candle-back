@@ -9,9 +9,7 @@ import com.lovecandle.demo.repository.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,20 +29,18 @@ public class ProductService {
         Product product = new Product(productDTO);
 
         // lista para armazenar os recursos associados
-        List<Resource> associatedResources = new ArrayList<>();
+        Set<Resource> associatedResources = new HashSet<>();
 
         // loop pelos recursos do DTO
         for (ResourceDTO resourceDTO : productDTO.getResources()) {
             // verifica se o ID do recurso existe
             if (resourceDTO.getId() != null) {
-                // busca o recurso no banco
-                Optional<Resource> optionalResource = resourceRepository.findById(resourceDTO.getId());
-                optionalResource.ifPresent(associatedResources::add); // adiciona o recurso encontrado à lista
+                // busca o recurso no banco, se ele existir, adiciona à lista de recursos associados
+                resourceRepository.findById(resourceDTO.getId()).ifPresent(associatedResources::add);
             } else {
-                // caso o ID do recurso não exista
+                // caso o ID do recurso não exista, cria um novo recurso e adiciona à lista de recursos associados
                 Resource newResource = new Resource(resourceDTO);
-                newResource.setProduct(product); // define o produto para o novo recurso
-                associatedResources.add(newResource); // adiciona o novo recurso à lista
+                associatedResources.add(newResource);
             }
         }
         // define a lista de recursos atualizada
@@ -52,6 +48,7 @@ public class ProductService {
 
         product = productRepository.save(product);
 
+        // convertendo o produto salvo de volta para ProductDTO
         return new ProductDTO(product);
     }
 

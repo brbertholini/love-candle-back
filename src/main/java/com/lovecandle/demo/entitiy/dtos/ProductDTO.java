@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -24,7 +25,7 @@ public class ProductDTO {
     private String description;
     private Double price;
     private String imgUrl;
-    private List<ResourceDTO> resources;
+    private Set<ResourceDTO> resources;
 
     public ProductDTO(Product product) {
         this.id = product.getId();
@@ -36,6 +37,6 @@ public class ProductDTO {
         this.description = product.getDescription();
         this.price = product.getPrice();
         this.imgUrl = product.getImgUrl();
-        this.resources = product.getResources().stream().map(ResourceDTO::new).collect(Collectors.toList());
+        this.resources = product.getResources().stream().map(ResourceDTO::new).collect(Collectors.toSet());
     }
 }

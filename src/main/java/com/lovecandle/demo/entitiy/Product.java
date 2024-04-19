@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,8 +26,10 @@ public class Product {
     private Double price;
     @Nullable
     private String imgUrl;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Resource> resources;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JoinTable(name = "RESOURCE_PRODUCT_MAPPING", joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "resource_id"))
+    private Set<Resource> resources; // Set<> usado para não ter repetição do mesmo Resource em um Produto
 
     public Product(ProductDTO productDTO) {
         this.id = productDTO.getId();
@@ -38,21 +41,9 @@ public class Product {
         this.description = productDTO.getDescription();
         this.price = productDTO.getPrice();
         this.imgUrl = productDTO.getImgUrl();
-        this.resources = productDTO.getResources().stream().map(Resource::new).collect(Collectors.toList());
+        this.resources = productDTO.getResources().stream().map(Resource::new).collect(Collectors.toSet());
     }
 
     public Product() {
-    }
-
-    public Product(Long id, String title, String category, String fragrance, int amount, int weight, String description, Double price, @Nullable String imgUrl) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.fragrance = fragrance;
-        this.amount = amount;
-        this.weight = weight;
-        this.description = description;
-        this.price = price;
-        this.imgUrl = imgUrl;
     }
 }

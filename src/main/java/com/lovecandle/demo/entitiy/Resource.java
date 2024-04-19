@@ -1,9 +1,14 @@
 package com.lovecandle.demo.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lovecandle.demo.entitiy.dtos.ProductDTO;
 import com.lovecandle.demo.entitiy.dtos.ResourceDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="resources")
@@ -19,9 +24,6 @@ public class Resource {
     private Double price;
     private int amount;
     private int quantityInStock;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
 
     public Resource(ResourceDTO resourceDTO) {
         this.id = resourceDTO.getId();
@@ -33,18 +35,7 @@ public class Resource {
         this.quantityInStock = resourceDTO.getQuantityInStock();
     }
 
-    @Deprecated
     public Resource() {
-    }
-
-    public Resource(Long id, String title, String category, String fragrance, int amount, Double price, int quantityInStock) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.fragrance = fragrance;
-        this.amount = amount;
-        this.price = price;
-        this.quantityInStock = quantityInStock;
     }
 }
 
